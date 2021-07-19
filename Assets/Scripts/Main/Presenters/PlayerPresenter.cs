@@ -1,22 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using Nightmare;
 using UnityEngine;
 
 public class PlayerPresenter : MonoBehaviour
 {
+#region Private Variables
+
+    [SerializeField]
+    private int startingHealth;
+
     [SerializeField]
     private PlayerHealth playerHealth;
 
+#endregion
+
+#region Unity events
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        var player = new Player(startingHealth);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+#endregion
 }

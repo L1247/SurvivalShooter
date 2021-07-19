@@ -1,15 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+using Nightmare;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 public class PlayerTests
 {
-    // A Test behaves as an ordinary method
+#region Test Methods
+
     [Test]
-    public void PlayerTestsSimplePasses()
+    public void CreatePlayer()
     {
-        // Use the Assert class to test conditions
+        var startingHealth = 100;
+        var player         = new Player(startingHealth);
+        Assert.AreEqual(startingHealth , player.CurrentHealth);
     }
+
+#endregion
 }
