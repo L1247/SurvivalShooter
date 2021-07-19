@@ -24,6 +24,15 @@ namespace Nightmare
 
     #endregion
 
+    #region Public Methods
+
+        public void TakeDamage(int amount)
+        {
+            CurrentHealth -= amount;
+        }
+
+    #endregion
+
     #region Private Methods
 
         private void Initialize()

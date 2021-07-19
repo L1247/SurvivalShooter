@@ -13,5 +13,15 @@ public class PlayerTests
         Assert.AreEqual(startingHealth , player.CurrentHealth);
     }
 
+    [Test]
+    public void TakeDamage()
+    {
+        var startingHealth = 100;
+        var damage         = 87;
+        var player         = new Player(startingHealth);
+        player.TakeDamage(damage);
+        Assert.AreEqual(13 , player.CurrentHealth);
+    }
+
 #endregion
 }
