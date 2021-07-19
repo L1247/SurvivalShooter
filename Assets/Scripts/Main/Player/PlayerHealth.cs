@@ -35,6 +35,7 @@ namespace Nightmare
 
         public void ResetPlayer()
         {
+            // currentHealth          = startingHealth;
             playerMovement.enabled = true;
             playerShooting.enabled = true;
 
@@ -55,12 +56,12 @@ namespace Nightmare
             // Set the damaged flag so the screen will flash.
             damaged = true;
 
-        #region Domain
-
-            // Reduce the current health by the damage amount.
-            currentHealth -= amount;
-
-        #endregion
+            // #region Domain
+            //
+            //     // Reduce the current health by the damage amount.
+            //     currentHealth -= amount;
+            //
+            // #endregion
 
             // Set the health bar's value to the current health.
             // 100f / 100f = 1f
@@ -74,9 +75,9 @@ namespace Nightmare
 
         #region Domain
 
-            if (currentHealth <= 0 && !isDead)
-                // ... it should die.
-                Death();
+            // if (currentHealth <= 0 && !isDead)
+            // ... it should die.
+            // Death();
 
         #endregion
         }

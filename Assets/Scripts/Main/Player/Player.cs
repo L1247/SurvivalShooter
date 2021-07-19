@@ -4,6 +4,8 @@ namespace Nightmare
     {
     #region Public Variables
 
+        public bool IsDead { get; private set; }
+
         public int CurrentHealth { get; private set; }
 
     #endregion
@@ -29,6 +31,7 @@ namespace Nightmare
         public void TakeDamage(int amount)
         {
             CurrentHealth -= amount;
+            IsDead        =  CurrentHealth <= 0;
         }
 
     #endregion
