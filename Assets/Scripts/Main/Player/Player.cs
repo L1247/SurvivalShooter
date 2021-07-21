@@ -1,3 +1,5 @@
+using Zenject;
+
 namespace Nightmare
 {
     public class Player
@@ -14,13 +16,17 @@ namespace Nightmare
 
         private readonly int startingHealth;
 
+        private readonly SignalBus signalBus;
+
     #endregion
 
     #region Constructor
 
-        public Player(int startingHealth)
+        public Player(int startingHealth , SignalBus signalBus = null)
         {
             this.startingHealth = startingHealth;
+            this.signalBus      = signalBus;
+            this.signalBus?.Fire<PlayerCreated>();
             Initialize();
         }
 
@@ -28,10 +34,19 @@ namespace Nightmare
 
     #region Public Methods
 
+        public void MakeDie()
+        {
+            IsDead = true;
+            signalBus?.Fire<PlayerDead>();
+        }
+
         public void TakeDamage(int amount)
         {
             CurrentHealth -= amount;
-            IsDead        =  CurrentHealth <= 0;
+
+            var playerTookDamage = new PlayerTookDamage(amount , CurrentHealth , startingHealth);
+            signalBus?.Fire(playerTookDamage);
+            if (CurrentHealth <= 0) MakeDie();
         }
 
     #endregion
@@ -45,4 +60,30 @@ namespace Nightmare
 
     #endregion
     }
+
+    public class PlayerTookDamage
+    {
+    #region Public Variables
+
+        public int Amount         { get; }
+        public int CurrentHealth  { get; }
+        public int StartingHealth { get; }
+
+    #endregion
+
+    #region Constructor
+
+        public PlayerTookDamage(int amount , int currentHealth , int startingHealth)
+        {
+            Amount         = amount;
+            CurrentHealth  = currentHealth;
+            StartingHealth = startingHealth;
+        }
+
+    #endregion
+    }
+
+    public class PlayerDead { }
+
+    public class PlayerCreated { }
 }

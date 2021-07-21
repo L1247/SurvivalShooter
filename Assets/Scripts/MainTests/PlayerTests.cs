@@ -34,5 +34,13 @@ public class PlayerTests
         Assert.AreEqual(true , player.IsDead);
     }
 
+    [Test]
+    public void MakePlayerDie()
+    {
+        var player = new Player(0);
+        player.MakeDie();
+        Assert.AreEqual(true , player.IsDead);
+    }
+
 #endregion
 }
