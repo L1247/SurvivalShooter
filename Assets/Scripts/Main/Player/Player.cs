@@ -16,18 +16,18 @@ namespace Nightmare
 
         private readonly int startingHealth;
 
-        [Inject]
-        private SignalBus signalBus;
+        private readonly SignalBus signalBus;
 
     #endregion
 
     #region Constructor
 
-        public Player(int startingHealth)
+        public Player(int startingHealth , SignalBus signalBus = null)
         {
             this.startingHealth = startingHealth;
+            this.signalBus      = signalBus;
+            this.signalBus?.Fire<PlayerCreated>();
             Initialize();
-            signalBus.Fire<PlayerCreated>();
         }
 
     #endregion
@@ -37,7 +37,7 @@ namespace Nightmare
         public void MakeDie()
         {
             IsDead = true;
-            signalBus.Fire<PlayerDead>();
+            signalBus?.Fire<PlayerDead>();
         }
 
         public void TakeDamage(int amount)
@@ -45,7 +45,7 @@ namespace Nightmare
             CurrentHealth -= amount;
 
             var playerTookDamage = new PlayerTookDamage(amount , CurrentHealth , startingHealth);
-            signalBus.Fire(playerTookDamage);
+            signalBus?.Fire(playerTookDamage);
             if (CurrentHealth <= 0) MakeDie();
         }
 

@@ -2,8 +2,9 @@
     "name": "MainTests",
     "rootNamespace": "",
     "references": [
-        "UnityEditor.TestRunner",
-        "Main"
+      "UnityEditor.TestRunner",
+      "Main",
+      "Zenject"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,3 +1,5 @@
+using Nightmare;
+using Nightmare.EventHandlers;
 using Zenject;
 
 public class MainBinder : MonoInstaller
@@ -6,7 +8,14 @@ public class MainBinder : MonoInstaller
 
     public override void InstallBindings()
     {
-        // SignalBusInstaller.Install(Container);
+        // Events
+        SignalBusInstaller.Install(Container);
+        Container.DeclareSignal<PlayerCreated>();
+        Container.DeclareSignal<PlayerDead>();
+        Container.DeclareSignal<PlayerTookDamage>();
+
+        // EventHandler
+        Container.Bind<PlayerViewEventHandler>().AsSingle().NonLazy();
     }
 
 #endregion
