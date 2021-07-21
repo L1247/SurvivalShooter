@@ -28,10 +28,15 @@ namespace Nightmare
 
     #region Public Methods
 
+        public void MakeDie()
+        {
+            IsDead = true;
+        }
+
         public void TakeDamage(int amount)
         {
             CurrentHealth -= amount;
-            IsDead        =  CurrentHealth <= 0;
+            if (CurrentHealth <= 0) MakeDie();
         }
 
     #endregion
