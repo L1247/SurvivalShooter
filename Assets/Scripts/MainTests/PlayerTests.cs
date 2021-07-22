@@ -1,15 +1,27 @@
 using Nightmare;
 using NUnit.Framework;
+using Zenject;
 
-public class PlayerTests
+public class PlayerTests : ZenjectUnitTestFixture
 {
+#region Setup/Teardown Methods
+
+    [SetUp]
+    public void Setup()
+    {
+        SignalBusInstaller.Install(Container);
+        Container.Bind<DomainEventBus>().AsSingle();
+    }
+
+#endregion
+
 #region Test Methods
 
     [Test]
     public void CreatePlayer()
     {
         var startingHealth = 100;
-        var player         = new Player(startingHealth);
+        var player         = Container.Instantiate<Player>(new object[] { startingHealth });
         Assert.AreEqual(startingHealth , player.CurrentHealth);
         Assert.AreEqual(false ,          player.IsDead);
     }
@@ -17,7 +29,7 @@ public class PlayerTests
     [Test]
     public void Should_Player_Created_Exist_When_CreatePlayer()
     {
-        var player       = new Player(0);
+        var player       = Container.Instantiate<Player>(new object[] { 0 });
         var domainEvents = player.GetDomainEvents();
         Assert.AreEqual(1 , domainEvents.Count);
         var playerCreated = (PlayerCreated)domainEvents[0];
@@ -29,7 +41,7 @@ public class PlayerTests
     {
         var startingHealth = 100;
         var damage         = 87;
-        var player         = new Player(startingHealth);
+        var player         = Container.Instantiate<Player>(new object[] { startingHealth });
         player.TakeDamage(damage);
         Assert.AreEqual(13 , player.CurrentHealth);
     }
@@ -38,7 +50,7 @@ public class PlayerTests
     public void Should_PlayerTookDamage_Exist_When_TakeDamage()
     {
         // event 1
-        var player = new Player(100);
+        var player = Container.Instantiate<Player>(new object[] { 100 });
         var damage = 87;
         // event 2
         player.TakeDamage(damage);
@@ -56,7 +68,7 @@ public class PlayerTests
     {
         var startingHealth = 100;
         var damage         = 101;
-        var player         = new Player(startingHealth);
+        var player         = Container.Instantiate<Player>(new object[] { startingHealth });
         player.TakeDamage(damage);
         Assert.AreEqual(true , player.IsDead);
     }
@@ -64,7 +76,7 @@ public class PlayerTests
     [Test]
     public void MakePlayerDie()
     {
-        var player = new Player(0);
+        var player = Container.Instantiate<Player>(new object[] { 100 });
         player.MakeDie();
         Assert.AreEqual(true , player.IsDead);
     }

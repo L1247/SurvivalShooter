@@ -10,7 +10,18 @@ namespace Nightmare
 
     #endregion
 
+    #region Constructor
+
+        public AggregateRoot(DomainEventBus domainEventBus) { }
+
+    #endregion
+
     #region Public Methods
+
+        public void ClearDomainEvent()
+        {
+            domainEvents.Clear();
+        }
 
         public List<DomainEvent> GetDomainEvents()
         {

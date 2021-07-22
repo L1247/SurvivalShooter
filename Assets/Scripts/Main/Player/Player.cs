@@ -22,12 +22,11 @@ namespace Nightmare
 
     #region Constructor
 
-        public Player(int startingHealth , SignalBus signalBus = null)
+        public Player(int startingHealth , DomainEventBus domainEventBus) : base(domainEventBus)
         {
             this.startingHealth = startingHealth;
-            this.signalBus      = signalBus;
-            this.signalBus?.Fire<PlayerCreated>();
             AddDomainEvent(new PlayerCreated());
+            // domainEventBus.PostAll(this);
             Initialize();
         }
 
@@ -38,15 +37,13 @@ namespace Nightmare
         public void MakeDie()
         {
             IsDead = true;
-            signalBus?.Fire<PlayerDead>();
+            AddDomainEvent(new PlayerDead());
         }
 
         public void TakeDamage(int amount)
         {
             CurrentHealth -= amount;
-
             var playerTookDamage = new PlayerTookDamage(amount , CurrentHealth , startingHealth);
-            signalBus?.Fire(playerTookDamage);
             AddDomainEvent(playerTookDamage);
             if (CurrentHealth <= 0) MakeDie();
         }

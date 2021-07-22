@@ -4,7 +4,8 @@
     "references": [
       "UnityEditor.TestRunner",
       "Main",
-      "Zenject"
+      "Zenject",
+      "Zenject-TestFramework"
     ],
     "includePlatforms": [
         "Editor"
