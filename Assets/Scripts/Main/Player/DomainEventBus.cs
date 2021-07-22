@@ -2,7 +2,16 @@ using Zenject;
 
 namespace Nightmare
 {
-    public class DomainEventBus
+    public interface IDomainEventBus
+    {
+    #region Public Methods
+
+        void PostAll(AggregateRoot aggregateRoot);
+
+    #endregion
+    }
+
+    public class DomainEventBus : IDomainEventBus
     {
     #region Private Variables
 

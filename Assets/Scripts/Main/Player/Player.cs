@@ -22,11 +22,11 @@ namespace Nightmare
 
     #region Constructor
 
-        public Player(int startingHealth , DomainEventBus domainEventBus) : base(domainEventBus)
+        public Player(int startingHealth , IDomainEventBus domainEventBus) : base(domainEventBus)
         {
             this.startingHealth = startingHealth;
             AddDomainEvent(new PlayerCreated());
-            // domainEventBus.PostAll(this);
+            domainEventBus.PostAll(this);
             Initialize();
         }
 

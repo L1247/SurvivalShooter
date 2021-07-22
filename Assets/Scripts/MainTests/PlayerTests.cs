@@ -1,4 +1,5 @@
 using Nightmare;
+using NSubstitute;
 using NUnit.Framework;
 using Zenject;
 
@@ -10,7 +11,7 @@ public class PlayerTests : ZenjectUnitTestFixture
     public void Setup()
     {
         SignalBusInstaller.Install(Container);
-        Container.Bind<DomainEventBus>().AsSingle();
+        Container.Bind<IDomainEventBus>().FromSubstitute().AsSingle();
     }
 
 #endregion
@@ -27,13 +28,15 @@ public class PlayerTests : ZenjectUnitTestFixture
     }
 
     [Test]
-    public void Should_Player_Created_Exist_When_CreatePlayer()
+    public void Should_Player_Created_Exist_And_Published_Event_When_CreatePlayer()
     {
         var player       = Container.Instantiate<Player>(new object[] { 0 });
         var domainEvents = player.GetDomainEvents();
         Assert.AreEqual(1 , domainEvents.Count);
         var playerCreated = (PlayerCreated)domainEvents[0];
         Assert.NotNull(playerCreated);
+        var domainEventBus = Container.Resolve<IDomainEventBus>();
+        domainEventBus.ReceivedWithAnyArgs(1).PostAll(null);
     }
 
     [Test]

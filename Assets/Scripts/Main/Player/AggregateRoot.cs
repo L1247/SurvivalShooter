@@ -12,7 +12,7 @@ namespace Nightmare
 
     #region Constructor
 
-        public AggregateRoot(DomainEventBus domainEventBus) { }
+        public AggregateRoot(IDomainEventBus domainEventBus) { }
 
     #endregion
 
