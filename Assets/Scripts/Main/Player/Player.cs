@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Zenject;
 
 namespace Nightmare
 {
-    public class Player
+    public class Player : AggregateRoot
     {
     #region Public Variables
 
@@ -15,8 +14,7 @@ namespace Nightmare
 
     #region Private Variables
 
-        private readonly int               startingHealth;
-        private readonly List<DomainEvent> domainEvents = new List<DomainEvent>();
+        private readonly int startingHealth;
 
         private readonly SignalBus signalBus;
 
@@ -29,18 +27,13 @@ namespace Nightmare
             this.startingHealth = startingHealth;
             this.signalBus      = signalBus;
             this.signalBus?.Fire<PlayerCreated>();
-            domainEvents.Add(new PlayerCreated());
+            AddDomainEvent(new PlayerCreated());
             Initialize();
         }
 
     #endregion
 
     #region Public Methods
-
-        public List<DomainEvent> GetDomainEvents()
-        {
-            return domainEvents;
-        }
 
         public void MakeDie()
         {
@@ -54,7 +47,7 @@ namespace Nightmare
 
             var playerTookDamage = new PlayerTookDamage(amount , CurrentHealth , startingHealth);
             signalBus?.Fire(playerTookDamage);
-            domainEvents.Add(new PlayerTookDamage(amount , CurrentHealth , startingHealth));
+            AddDomainEvent(playerTookDamage);
             if (CurrentHealth <= 0) MakeDie();
         }
 
