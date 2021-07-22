@@ -15,6 +15,16 @@ public class PlayerTests
     }
 
     [Test]
+    public void Should_Player_Created_Exist_When_CreatePlayer()
+    {
+        var player       = new Player(0);
+        var domainEvents = player.GetDomainEvents();
+        Assert.AreEqual(1 , domainEvents.Count);
+        var playerCreated = (PlayerCreated)domainEvents[0];
+        Assert.NotNull(playerCreated);
+    }
+
+    [Test]
     public void TakeDamage()
     {
         var startingHealth = 100;

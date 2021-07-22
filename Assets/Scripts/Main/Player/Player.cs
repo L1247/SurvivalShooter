@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Zenject;
 
 namespace Nightmare
@@ -14,7 +15,8 @@ namespace Nightmare
 
     #region Private Variables
 
-        private readonly int startingHealth;
+        private readonly int               startingHealth;
+        private readonly List<DomainEvent> domainEvents = new List<DomainEvent>();
 
         private readonly SignalBus signalBus;
 
@@ -27,12 +29,18 @@ namespace Nightmare
             this.startingHealth = startingHealth;
             this.signalBus      = signalBus;
             this.signalBus?.Fire<PlayerCreated>();
+            domainEvents.Add(new PlayerCreated());
             Initialize();
         }
 
     #endregion
 
     #region Public Methods
+
+        public List<DomainEvent> GetDomainEvents()
+        {
+            return domainEvents;
+        }
 
         public void MakeDie()
         {
@@ -83,7 +91,7 @@ namespace Nightmare
     #endregion
     }
 
-    public class PlayerDead { }
+    public class PlayerDead : DomainEvent { }
 
-    public class PlayerCreated { }
+    public class PlayerCreated : DomainEvent { }
 }
