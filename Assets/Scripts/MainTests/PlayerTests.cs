@@ -35,6 +35,23 @@ public class PlayerTests
     }
 
     [Test]
+    public void Should_PlayerTookDamage_Exist_When_TakeDamage()
+    {
+        // event 1
+        var player = new Player(100);
+        var damage = 87;
+        // event 2
+        player.TakeDamage(damage);
+        var domainEvents = player.GetDomainEvents();
+        Assert.AreEqual(2 , domainEvents.Count);
+        var playerTookDamage = (PlayerTookDamage)domainEvents[1];
+        Assert.NotNull(playerTookDamage);
+        Assert.AreEqual(100 , playerTookDamage.StartingHealth);
+        Assert.AreEqual(87 ,  playerTookDamage.Amount);
+        Assert.AreEqual(13 ,  playerTookDamage.CurrentHealth);
+    }
+
+    [Test]
     public void TakeDamage_Player_Will_Die()
     {
         var startingHealth = 100;

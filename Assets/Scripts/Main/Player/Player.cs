@@ -54,6 +54,7 @@ namespace Nightmare
 
             var playerTookDamage = new PlayerTookDamage(amount , CurrentHealth , startingHealth);
             signalBus?.Fire(playerTookDamage);
+            domainEvents.Add(new PlayerTookDamage(amount , CurrentHealth , startingHealth));
             if (CurrentHealth <= 0) MakeDie();
         }
 
@@ -69,7 +70,7 @@ namespace Nightmare
     #endregion
     }
 
-    public class PlayerTookDamage
+    public class PlayerTookDamage : DomainEvent
     {
     #region Public Variables
 
