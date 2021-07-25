@@ -12,6 +12,8 @@ namespace Nightmare
 
     #region Private Variables
 
+        private readonly IDomainEventBus domainEventBus;
+
         private readonly int startingHealth;
 
     #endregion
@@ -21,8 +23,9 @@ namespace Nightmare
         public Player(int startingHealth , IDomainEventBus domainEventBus) : base(domainEventBus)
         {
             this.startingHealth = startingHealth;
+            this.domainEventBus = domainEventBus;
             AddDomainEvent(new PlayerCreated());
-            domainEventBus.PostAll(this);
+            this.domainEventBus.PostAll(this);
             Initialize();
         }
 
@@ -34,6 +37,7 @@ namespace Nightmare
         {
             IsDead = true;
             AddDomainEvent(new PlayerDead());
+            domainEventBus.PostAll(this);
         }
 
         public void TakeDamage(int amount)
@@ -41,6 +45,7 @@ namespace Nightmare
             CurrentHealth -= amount;
             var playerTookDamage = new PlayerTookDamage(amount , CurrentHealth , startingHealth);
             AddDomainEvent(playerTookDamage);
+            domainEventBus.PostAll(this);
             if (CurrentHealth <= 0) MakeDie();
         }
 

@@ -10,9 +10,7 @@ public class MainBinder : MonoInstaller
     {
         // Events
         SignalBusInstaller.Install(Container);
-        Container.DeclareSignal<PlayerCreated>();
-        Container.DeclareSignal<PlayerDead>();
-        Container.DeclareSignal<PlayerTookDamage>();
+        Container.DeclareSignal<DomainEvent>();
         Container.Bind<IDomainEventBus>().To<DomainEventBus>().AsSingle();
 
         // EventHandler
