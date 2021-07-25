@@ -8,26 +8,25 @@ namespace Nightmare.EventHandlers
     {
     #region Private Variables
 
-        [Inject]
+        [Inject(Optional = true)]
         private PlayerPresenter playerPresenter;
 
     #endregion
 
     #region Constructor
 
-        public PlayerViewEventHandler(SignalBus signalBus)
+        public PlayerViewEventHandler(IDomainEventBus domainEventBus)
         {
-            signalBus.Subscribe<PlayerDead>(OnPlayerDead);
-            signalBus.Subscribe<PlayerTookDamage>(OnPlayerTookDamage);
+            Register(domainEventBus , true);
         }
 
     #endregion
 
-    #region Private Methods
+    #region Public Methods
 
-        private void OnPlayerDead(PlayerDead playerDead) { }
+        public void OnPlayerDead(PlayerDead playerDead) { }
 
-        private void OnPlayerTookDamage(PlayerTookDamage playerTookDamage)
+        public void OnPlayerTookDamage(PlayerTookDamage playerTookDamage)
         {
             var amount         = playerTookDamage.Amount;
             var currentHealth  = playerTookDamage.CurrentHealth;
@@ -35,6 +34,16 @@ namespace Nightmare.EventHandlers
             Debug.Log(
                 $"OnPlayerTookDamage - Amount {amount} , CurrentHealth {currentHealth} , startingHealth {startingHealth}");
             playerPresenter.PlayerTookDamage(amount , currentHealth , startingHealth);
+        }
+
+    #endregion
+
+    #region Private Methods
+
+        private void Register(IDomainEventBus domainEventBus , bool isEarly)
+        {
+            domainEventBus.Register<PlayerDead>(OnPlayerDead , isEarly);
+            domainEventBus.Register<PlayerTookDamage>(OnPlayerTookDamage , isEarly);
         }
 
     #endregion

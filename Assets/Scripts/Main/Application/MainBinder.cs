@@ -1,5 +1,6 @@
 using Nightmare;
 using Nightmare.EventHandlers;
+using rStar;
 using Zenject;
 
 public class MainBinder : MonoInstaller
@@ -10,9 +11,8 @@ public class MainBinder : MonoInstaller
     {
         // Events
         SignalBusInstaller.Install(Container);
-        Container.DeclareSignal<PlayerCreated>();
-        Container.DeclareSignal<PlayerDead>();
-        Container.DeclareSignal<PlayerTookDamage>();
+        Container.DeclareSignal<DomainEvent>();
+        Container.Bind<IDomainEventBus>().To<DomainEventBus>().AsSingle();
 
         // EventHandler
         Container.Bind<PlayerViewEventHandler>().AsSingle().NonLazy();

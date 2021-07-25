@@ -1,8 +1,6 @@
-using Zenject;
-
 namespace Nightmare
 {
-    public class Player
+    public class Player : AggregateRoot
     {
     #region Public Variables
 
@@ -14,19 +12,20 @@ namespace Nightmare
 
     #region Private Variables
 
-        private readonly int startingHealth;
+        private readonly IDomainEventBus domainEventBus;
 
-        private readonly SignalBus signalBus;
+        private readonly int startingHealth;
 
     #endregion
 
     #region Constructor
 
-        public Player(int startingHealth , SignalBus signalBus = null)
+        public Player(int startingHealth , IDomainEventBus domainEventBus) : base(domainEventBus)
         {
             this.startingHealth = startingHealth;
-            this.signalBus      = signalBus;
-            this.signalBus?.Fire<PlayerCreated>();
+            this.domainEventBus = domainEventBus;
+            AddDomainEvent(new PlayerCreated());
+            this.domainEventBus.PostAll(this);
             Initialize();
         }
 
@@ -37,15 +36,16 @@ namespace Nightmare
         public void MakeDie()
         {
             IsDead = true;
-            signalBus?.Fire<PlayerDead>();
+            AddDomainEvent(new PlayerDead());
+            domainEventBus.PostAll(this);
         }
 
         public void TakeDamage(int amount)
         {
             CurrentHealth -= amount;
-
             var playerTookDamage = new PlayerTookDamage(amount , CurrentHealth , startingHealth);
-            signalBus?.Fire(playerTookDamage);
+            AddDomainEvent(playerTookDamage);
+            domainEventBus.PostAll(this);
             if (CurrentHealth <= 0) MakeDie();
         }
 
@@ -61,7 +61,7 @@ namespace Nightmare
     #endregion
     }
 
-    public class PlayerTookDamage
+    public class PlayerTookDamage : DomainEvent
     {
     #region Public Variables
 
@@ -83,7 +83,7 @@ namespace Nightmare
     #endregion
     }
 
-    public class PlayerDead { }
+    public class PlayerDead : DomainEvent { }
 
-    public class PlayerCreated { }
+    public class PlayerCreated : DomainEvent { }
 }
