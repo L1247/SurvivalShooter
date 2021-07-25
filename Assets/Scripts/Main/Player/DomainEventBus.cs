@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Nightmare;
 using Zenject;
 
-namespace Nightmare
+namespace rStar
 {
     public class DomainEventBus : IDomainEventBus
     {

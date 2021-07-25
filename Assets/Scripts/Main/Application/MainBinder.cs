@@ -1,5 +1,6 @@
 using Nightmare;
 using Nightmare.EventHandlers;
+using rStar;
 using Zenject;
 
 public class MainBinder : MonoInstaller

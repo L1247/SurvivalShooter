@@ -1,5 +1,6 @@
 using Nightmare;
 using NUnit.Framework;
+using rStar;
 using Zenject;
 
 namespace MainTests
