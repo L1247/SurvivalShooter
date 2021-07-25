@@ -8,7 +8,7 @@ namespace Nightmare
 
         void PostAll(AggregateRoot aggregateRoot);
 
-        void Register<T>(Action<T> callBackAction);
+        void Register<T>(Action<T> callBackAction , bool isEarly = false);
 
     #endregion
     }

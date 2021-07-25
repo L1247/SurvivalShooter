@@ -17,8 +17,7 @@ namespace Nightmare.EventHandlers
 
         public PlayerViewEventHandler(IDomainEventBus domainEventBus)
         {
-            domainEventBus.Register<PlayerDead>(OnPlayerDead);
-            domainEventBus.Register<PlayerTookDamage>(OnPlayerTookDamage);
+            Register(domainEventBus , true);
         }
 
     #endregion
@@ -35,6 +34,16 @@ namespace Nightmare.EventHandlers
             Debug.Log(
                 $"OnPlayerTookDamage - Amount {amount} , CurrentHealth {currentHealth} , startingHealth {startingHealth}");
             playerPresenter.PlayerTookDamage(amount , currentHealth , startingHealth);
+        }
+
+    #endregion
+
+    #region Private Methods
+
+        private void Register(IDomainEventBus domainEventBus , bool isEarly)
+        {
+            domainEventBus.Register<PlayerDead>(OnPlayerDead , isEarly);
+            domainEventBus.Register<PlayerTookDamage>(OnPlayerTookDamage , isEarly);
         }
 
     #endregion
