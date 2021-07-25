@@ -1,3 +1,5 @@
+using System;
+
 namespace Nightmare
 {
     public interface IDomainEventBus
@@ -5,6 +7,8 @@ namespace Nightmare
     #region Public Methods
 
         void PostAll(AggregateRoot aggregateRoot);
+
+        void Register<T>(Action<T> callBackAction);
 
     #endregion
     }

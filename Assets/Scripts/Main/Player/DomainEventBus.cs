@@ -1,3 +1,4 @@
+using System;
 using Zenject;
 
 namespace Nightmare
@@ -29,6 +30,8 @@ namespace Nightmare
                 Post(domainEvent);
             aggregateRoot.ClearDomainEvent();
         }
+
+        public void Register<T>(Action<T> callBackAction) { }
 
     #endregion
 
