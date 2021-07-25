@@ -13,7 +13,7 @@ public class MainBinder : MonoInstaller
         Container.DeclareSignal<PlayerCreated>();
         Container.DeclareSignal<PlayerDead>();
         Container.DeclareSignal<PlayerTookDamage>();
-        Container.Bind<DomainEventBus>().AsSingle();
+        Container.Bind<IDomainEventBus>().To<DomainEventBus>().AsSingle();
 
         // EventHandler
         Container.Bind<PlayerViewEventHandler>().AsSingle().NonLazy();
