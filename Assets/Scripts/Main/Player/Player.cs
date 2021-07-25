@@ -1,5 +1,3 @@
-using Zenject;
-
 namespace Nightmare
 {
     public class Player : AggregateRoot
@@ -15,8 +13,6 @@ namespace Nightmare
     #region Private Variables
 
         private readonly int startingHealth;
-
-        private readonly SignalBus signalBus;
 
     #endregion
 
