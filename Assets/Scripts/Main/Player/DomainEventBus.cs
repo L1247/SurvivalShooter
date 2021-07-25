@@ -1,10 +1,17 @@
 using System;
+using System.Collections.Generic;
 using Zenject;
 
 namespace Nightmare
 {
     public class DomainEventBus : IDomainEventBus
     {
+    #region Public Variables
+
+        public Dictionary<Type , List<Action<object>>> CallBacks { get; }
+
+    #endregion
+
     #region Private Variables
 
         private readonly SignalBus signalBus;
@@ -17,6 +24,7 @@ namespace Nightmare
         public DomainEventBus(SignalBus signalBus)
         {
             this.signalBus = signalBus;
+            CallBacks      = new Dictionary<Type , List<Action<object>>>();
         }
 
     #endregion
@@ -31,7 +39,24 @@ namespace Nightmare
             aggregateRoot.ClearDomainEvent();
         }
 
-        public void Register<T>(Action<T> callBackAction) { }
+        public void Register<T>(Action<T> callBackAction)
+        {
+            var type        = typeof(T);
+            var containsKey = CallBacks.ContainsKey(type);
+            if (containsKey)
+            {
+                var actions = CallBacks[type];
+                // if (isEarly) actions.Insert(0 , o => callBackAction((T)o));
+                /*else*/
+                actions.Add(o => callBackAction((T)o));
+            }
+            else
+            {
+                var actions = new List<Action<object>>();
+                actions.Add(o => callBackAction((T)o));
+                CallBacks.Add(type , actions);
+            }
+        }
 
     #endregion
 
